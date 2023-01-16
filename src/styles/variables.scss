@@ -1,0 +1,20 @@
+$background-light: #fff;
+$background-dark: #000;
+
+$primary-glow-light: radial-gradient(rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+$primary-glow-dark: linear-gradient(
+  to bottom right,
+  rgba(1, 65, 255, 0),
+  rgba(1, 65, 255, 0),
+  rgba(1, 65, 255, 0.3)
+);
+
+$secondary-glow-light: conic-gradient(
+  from 180deg at 50% 50%,
+  #16abff33 0deg,
+  #0885ff33 55deg,
+  #54d6ff33 120deg,
+  #0071ff33 160deg,
+  transparent 360deg
+);
+$secondary-glow-dark: radial-gradient(rgba(1, 65, 255, 0.4), rgba(1, 65, 255, 0));

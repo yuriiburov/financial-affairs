@@ -1,0 +1,50 @@
+@import '@/styles/variables.scss';
+
+.background {
+  min-height: 100vh;
+  overflow: hidden;
+
+  &_light {
+    background: $background-light;
+  }
+
+  &_dark {
+    background: $background-dark;
+  }
+
+  &__item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    filter: blur(45px);
+  }
+
+  &__primary {
+    transform: translate(-80%, -50%);
+    border-radius: 50%;
+    width: 480px;
+    height: 360px;
+
+    &_light {
+      background: $primary-glow-light;
+    }
+
+    &_dark {
+      background: $primary-glow-dark;
+    }
+  }
+
+  &__secondary {
+    transform: translate(10%, -50%);
+    width: 240px;
+    height: 180px;
+
+    &_light {
+      background: $secondary-glow-light;
+    }
+
+    &_dark {
+      background: $secondary-glow-dark;
+    }
+  }
+}
