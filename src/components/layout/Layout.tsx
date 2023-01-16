@@ -1,5 +1,8 @@
+import useAppDispatch from '@/hooks/useAppDispatch'
+import useAppTheme from '@/hooks/useAppTheme'
+import { setThemeMode } from '@/redux/themeSlice'
 import Head from 'next/head'
-import { FC, memo, ReactNode, useEffect, useState } from 'react'
+import { FC, memo, ReactNode, useEffect, useMemo } from 'react'
 import classes from './Layout.module.scss'
 
 interface Props {
@@ -7,24 +10,28 @@ interface Props {
 }
 
 const Layout: FC<Props> = ({ children }) => {
-  const [mode, setMode] = useState<'dark' | 'light'>('light')
+  const { mode } = useAppTheme()
+  const dispatch = useAppDispatch()
 
-  const modeCondition = mode === 'dark' ? '_dark' : '_light'
+  const modeCondition = useMemo(() => (mode === 'dark' ? '_dark' : '_light'), [mode])
 
   useEffect(() => {
     const handleModeChange = (e: MediaQueryListEvent) => {
-      setMode(e.matches ? 'dark' : 'light')
+      dispatch(setThemeMode(e.matches ? 'dark' : 'light'))
     }
 
     window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', handleModeChange)
-    setMode(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    dispatch(
+      setThemeMode(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    )
 
     return () => {
       window
         .matchMedia('(prefers-color-scheme: dark)')
         .removeEventListener('change', handleModeChange)
     }
-  }, [])
+  }, [dispatch])
 
   return (
     <>
@@ -35,15 +42,18 @@ const Layout: FC<Props> = ({ children }) => {
       </Head>
 
       <div className={`${classes.background} ${classes[`background${modeCondition}`]}`}>
-        {children}
+        <main>{children}</main>
+
         <div
           className={`${classes.background__item} ${classes.background__primary} ${
             classes[`background__primary${modeCondition}`]
-          }`}></div>
+          }`}
+        />
         <div
           className={`${classes.background__item} ${classes.background__secondary} ${
             classes[`background__secondary${modeCondition}`]
-          }`}></div>
+          }`}
+        />
       </div>
     </>
   )
