@@ -1,0 +1,44 @@
+@import '../../styles/variables.scss';
+
+.ripples {
+  display: flex;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__box {
+    width: $ripple-size;
+    height: $ripple-size;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__item {
+    position: absolute;
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 50%;
+    animation: rippling 10s linear infinite;
+  }
+}
+
+@keyframes rippling {
+  0% {
+    width: 190px;
+    height: 190px;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    width: $ripple-size;
+    height: $ripple-size;
+    opacity: 0;
+  }
+}
