@@ -1,12 +1,19 @@
+import { themeModeType } from '@/interfaces'
 import useAppSelector from './useAppSelector'
 
-const useAppTheme = () => {
-  const { themeMode } = useAppSelector(({ theme }) => theme)
+export interface useAppThemeReturnedType {
+  mode: themeModeType
+  color: '#fff' | '#000'
+  background: '#000' | '#fff'
+}
+
+const useAppTheme = (): useAppThemeReturnedType => {
+  const { themeMode: mode } = useAppSelector(({ theme }) => theme)
 
   return {
-    mode: themeMode,
-    color: themeMode === 'dark' ? '#fff' : '#000',
-    background: themeMode === 'dark' ? '#000' : '#fff',
+    mode,
+    color: mode === 'dark' ? '#fff' : '#000',
+    background: mode === 'dark' ? '#000' : '#fff',
   }
 }
 

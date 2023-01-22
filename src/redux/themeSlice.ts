@@ -1,8 +1,9 @@
+import { themeModeType } from '@/interfaces'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
 
 export interface ThemeState {
-  themeMode: 'light' | 'dark'
+  themeMode: themeModeType
 }
 
 const initialState: ThemeState = {
@@ -19,7 +20,6 @@ export const themeSlice = createSlice({
   },
 })
 
-// Action creators are generated for each case reducer function
 export const { setThemeMode } = themeSlice.actions
 
 export default themeSlice.reducer
