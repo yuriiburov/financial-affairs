@@ -1,3 +1,4 @@
+import { IMainScreenPeriod, IPeriod } from '@/interfaces'
 import { IIncome } from '@/interfaces/income'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import { createSlice } from '@reduxjs/toolkit'
@@ -6,10 +7,14 @@ import { setAppData } from '../index'
 
 export interface IncomeState {
   income: IIncome[]
+  periodIncome: IIncome[]
+  mainScreenIncome: number | null
 }
 
 const initialState: IncomeState = {
   income: [],
+  periodIncome: [],
+  mainScreenIncome: null,
 }
 
 export const incomeSlice = createSlice({
@@ -40,9 +45,44 @@ export const incomeSlice = createSlice({
       setAppData('income', income)
       state.income = income
     },
+    setPeriodIncome: (state, { payload }: PayloadAction<IPeriod>) => {
+      state.periodIncome = state.income.filter(
+        ({ date }) =>
+          date.getTime() >= payload.from.getTime() && date.getTime() <= payload.to.getTime()
+      )
+    },
+    setMainScreenIncome: (state, { payload }: PayloadAction<IMainScreenPeriod>) => {
+      const currentPeriodIncome = state.income.filter(({ date }) => {
+        const isCurrentYear = date.getFullYear() === new Date().getFullYear()
+        const isCurrentMonth = date.getMonth() === new Date().getMonth()
+        const isToday = date.getDate() === new Date().getDate()
+        const isCurrentWeek = () => {
+          const current = new Date()
+          const first = current.getDate() - current.getDay()
+          const last = first + 6
+          const firstDay = new Date(current.setDate(first))
+          const lastDay = new Date(current.setDate(last))
+
+          return date.getTime() >= firstDay.getTime() && date.getDate() <= lastDay.getTime()
+        }
+
+        switch (payload) {
+          case 'day':
+            return isCurrentYear && isCurrentMonth && isToday
+          case 'week':
+            return isCurrentYear && isCurrentMonth && isCurrentWeek()
+          case 'month':
+            return isCurrentYear && isCurrentMonth
+          case 'year':
+            return isCurrentYear
+        }
+      })
+      state.mainScreenIncome = currentPeriodIncome.reduce((acc, income) => acc + income.sum, 0)
+    },
   },
 })
 
-export const { addIncome, removeIncome, changeIncome } = incomeSlice.actions
+export const { addIncome, removeIncome, changeIncome, setPeriodIncome, setMainScreenIncome } =
+  incomeSlice.actions
 
 export default incomeSlice.reducer
