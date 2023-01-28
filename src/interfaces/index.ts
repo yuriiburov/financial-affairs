@@ -18,3 +18,10 @@ export interface IAppData {
   plannedExpense: IPlannedExpense[]
   mandatoryExpense: IMandatoryExpense[]
 }
+
+export interface IPeriod {
+  from: Date
+  to: Date
+}
+
+export type IMainScreenPeriod = 'day' | 'week' | 'month' | 'year'

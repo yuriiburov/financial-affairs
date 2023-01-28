@@ -8,14 +8,22 @@ const defaultAppData: IAppData = {
   debt: [],
 }
 
-export const setAppData = (appDataKey?: keyof IAppData, newData?: any) => {
+export const getAppData = () => {
   if (typeof window === 'undefined') return
+
   const appData: IAppData =
     JSON.parse(
       localStorage.getItem('financialAffairs') ||
         JSON.stringify(localStorage.getItem('financialAffairs'))
     ) || defaultAppData
 
+  return appData
+}
+
+export const setAppData = (appDataKey?: keyof IAppData, newData?: any) => {
+  const appData = getAppData()
+
+  if (!appData) return
   if (!appDataKey) return appData
 
   if (newData && typeof newData === typeof defaultAppData[appDataKey]) {
